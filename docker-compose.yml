@@ -1,0 +1,10 @@
+services:
+  tests:
+    build: .
+    ipc: host
+    environment:
+      BASE_URL: ${BASE_URL:-https://www.saucedemo.com}
+      LOCATOR_RECOVERY: ${LOCATOR_RECOVERY:-on}
+    volumes:
+      - ./playwright-report:/app/playwright-report
+      - ./test-results:/app/test-results

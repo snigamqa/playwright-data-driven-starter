@@ -1,0 +1,26 @@
+{
+  "name": "playwright-data-driven-starter",
+  "version": "0.1.0",
+  "description": "Data-driven Playwright and TypeScript starter with POM, audited locator recovery, Docker and GitHub Actions",
+  "scripts": {
+    "test": "playwright test",
+    "setup": "bash scripts/setup.sh",
+    "typecheck": "tsc --noEmit",
+    "test:unit": "tsc --outDir .build && node --test .build/tests/unit/*.test.js",
+    "verify": "npm run typecheck && npm run test:unit && npm test",
+    "test:headed": "playwright test --headed",
+    "test:docker": "docker compose run --rm tests",
+    "report": "playwright show-report"
+  },
+  "license": "UNLICENSED",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "private": true,
+  "devDependencies": {
+    "@playwright/test": "1.65.0",
+    "@types/node": "20.19.43",
+    "typescript": "7.0.2"
+  }
+}

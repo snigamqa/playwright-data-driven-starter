@@ -1,0 +1,30 @@
+[
+  {
+    "id": "LOGIN-01",
+    "description": "standard user signs in",
+    "username": "standard_user",
+    "password": "secret_sauce",
+    "expectedError": null
+  },
+  {
+    "id": "LOGIN-02",
+    "description": "locked out user is rejected",
+    "username": "locked_out_user",
+    "password": "secret_sauce",
+    "expectedError": "Epic sadface: Sorry, this user has been locked out."
+  },
+  {
+    "id": "LOGIN-03",
+    "description": "wrong password is rejected",
+    "username": "standard_user",
+    "password": "wrong_password",
+    "expectedError": "Epic sadface: Username and password do not match any user in this service"
+  },
+  {
+    "id": "LOGIN-04",
+    "description": "missing username is rejected",
+    "username": "",
+    "password": "secret_sauce",
+    "expectedError": "Epic sadface: Username is required"
+  }
+]
