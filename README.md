@@ -42,6 +42,9 @@ tests/
   fixtures.ts                 provides page objects and attaches the recovery audit
   e2e/                        browser specs
   unit/                       node:test unit tests
+scripts/agent/                framework index + rule checks for the agent commands
+.claude/                      playwright-test-author subagent + /automate-story command
+.mcp.json                     MCP servers (Atlassian/Jira)
 ```
 
 ## Adding a data-driven test
@@ -95,13 +98,28 @@ Uses `mcr.microsoft.com/playwright:v1.65.0-noble`. Keep this tag in sync with
 
 ## AI test-authoring agent (Claude Code)
 
-`CLAUDE.md` holds the rules; `.claude/` holds the subagent and the `/automate-story` command; `.mcp.json` connects Jira.
+`CLAUDE.md` holds the rules; `.claude/` holds the `playwright-test-author` subagent and the
+`/automate-story` command; `.mcp.json` connects Jira.
 
 ```text
 /automate-story SQA-45
 ```
 
-The agent reads the Jira story, checks existing tests **and data rows** for duplicates, reuses page-object methods, shows a plan, then implements. First use: run `/mcp` in Claude Code and authenticate Atlassian.
+The command spawns the `playwright-test-author` subagent, which follows the mandatory workflow in
+`CLAUDE.md` §1:
+
+1. Reads the Jira story (summary, acceptance criteria, linked issues, comments) via the Atlassian MCP.
+2. Builds a scenario table — one row per AC plus the negative/edge cases the ACs imply.
+3. Duplicate check per scenario: `agent:coverage` + `agent:find-test`. Hits ≥ 0.30 are opened and
+   judged by flow + assertion, not by score.
+4. POM reuse check per action/element: `agent:find-method` — reuse or extend existing page-object
+   methods before creating new ones.
+5. **Shows the plan table (`scenario | decision | POM reused | POM new | data file`) and waits for
+   approval — no code is written before that.**
+6. Implements (new scenarios are usually new data rows, not new specs) and runs `npm run agent:verify`.
+
+First use: run `/mcp` in Claude Code and authenticate Atlassian. If the Atlassian MCP server fails
+to connect, the agent cannot read the story — fix or retry the connection first.
 
 | Command | What it does |
 | --- | --- |
