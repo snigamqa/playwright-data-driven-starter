@@ -1,0 +1,5 @@
+id,option,expectedFirstProduct
+SORT-01,Name (A to Z),Sauce Labs Backpack
+SORT-02,Name (Z to A),Test.allTheThings() T-Shirt (Red)
+SORT-03,Price (low to high),Sauce Labs Onesie
+SORT-04,Price (high to low),Sauce Labs Fleece Jacket
