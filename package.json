@@ -10,7 +10,14 @@
     "verify": "npm run typecheck && npm run test:unit && npm test",
     "test:headed": "playwright test --headed",
     "test:docker": "docker compose run --rm tests",
-    "report": "playwright show-report"
+    "report": "playwright show-report",
+    "test:strict": "cross-env LOCATOR_RECOVERY=off playwright test",
+    "agent:index": "tsx scripts/agent/framework-index.ts index",
+    "agent:find-test": "tsx scripts/agent/framework-index.ts find-test",
+    "agent:find-method": "tsx scripts/agent/framework-index.ts find-method",
+    "agent:coverage": "tsx scripts/agent/framework-index.ts coverage",
+    "agent:check": "tsx scripts/agent/check-rules.ts",
+    "agent:verify": "npm run typecheck && npm run agent:check && npm run test:unit && npm run test:strict"
   },
   "license": "UNLICENSED",
   "type": "module",
@@ -21,6 +28,9 @@
   "devDependencies": {
     "@playwright/test": "1.65.0",
     "@types/node": "20.19.43",
+    "cross-env": "^10.1.0",
+    "ts-morph": "^28.0.0",
+    "tsx": "^4.23.15",
     "typescript": "7.0.2"
   }
 }

@@ -92,3 +92,23 @@ Uses `mcr.microsoft.com/playwright:v1.65.0-noble`. Keep this tag in sync with
 
 `.github/workflows/playwright.yml` runs typecheck, unit tests and browser tests on pushes to
 `main` and on pull requests, and uploads the HTML report as an artifact.
+
+## AI test-authoring agent (Claude Code)
+
+`CLAUDE.md` holds the rules; `.claude/` holds the subagent and the `/automate-story` command; `.mcp.json` connects Jira.
+
+```text
+/automate-story SQA-45
+```
+
+The agent reads the Jira story, checks existing tests **and data rows** for duplicates, reuses page-object methods, shows a plan, then implements. First use: run `/mcp` in Claude Code and authenticate Atlassian.
+
+| Command | What it does |
+| --- | --- |
+| `npm run agent:index` | Summarise indexed tests, data rows, page classes and methods (`.agent/`, git-ignored) |
+| `npm run agent:find-test -- "<text>"` | Find similar tests/data rows |
+| `npm run agent:find-method -- "<text>"` | Find similar page-object methods and locators |
+| `npm run agent:coverage -- SQA-45` | Everything linked to a Jira key (`jira` field on data rows) |
+| `npm run agent:check` | Enforce the framework rules in `CLAUDE.md` (also runs in CI) |
+| `npm run test:strict` | Browser tests with `LOCATOR_RECOVERY=off` (primary locators only) |
+| `npm run agent:verify` | typecheck + `agent:check` + unit + strict browser tests |
