@@ -44,6 +44,24 @@ export class InventoryPage extends BasePage {
       { description: 'css=.shopping_cart_badge', build: (p) => p.locator('.shopping_cart_badge') },
     ]);
   }
+
+  /** Sorts the inventory by the visible option text, e.g. "Price (low to high)". */
+  async sortBy(option: string): Promise<void> {
+    const dropdown = await this.find('sortDropdown', [
+      { description: 'role=combobox', build: (p) => p.getByRole('combobox') },
+      { description: 'testId=product-sort-container', build: (p) => p.getByTestId('product-sort-container') },
+      { description: 'css=#product_sort_container', build: (p) => p.locator('#product_sort_container') },
+    ]);
+    await dropdown.selectOption({ label: option });
+  }
+
+  /** Locator for the name of the product listed first in the current sort order. */
+  firstItemName(): Promise<Locator> {
+    return this.find('firstItemName', [
+      { description: 'testId=inventory-item-name', build: (p) => p.getByTestId('inventory-item-name') },
+      { description: 'css=.inventory_item_name', build: (p) => p.locator('.inventory_item_name') },
+    ]);
+  }
 }
 
 function item(page: Page, productName: string): Locator {
